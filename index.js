@@ -1,29 +1,33 @@
-const express = require("express")
-const app = express()
-app.use(express.json())
-
-//current date and time
-const dt = Date.now();
-const date_obj = new Date(dt);
-const date = date_obj.getDate();
-const month = date_obj.getMonth() + 1;
-const year = date_obj.getFullYear();
-const time = date_obj.getTime();
-const fileName = year + "-" + month + "-" + date + "-" + time;
-//content
-const timestamp = new Date().toISOString();
-
-//file
 const fs = require("fs");
-fs.writeFile(`${fileName}.txt`, timestamp, function (err) { console.log("success") });
+const express = require("express");
+const app = express();
+const PORT = 4000;
 
-//read file
-let files = [];
-fs.readdir("./", function (err, list) { files.push(list) })
 
-//api endpoint
-app.get("/", (req, res) => {
-    res.json({ Files: { files } });
+
+let title = () => {
+  var timestamp = new Date().toISOString();
+  return timestamp;
+};
+
+// current timestamp in milliseconds
+let ts = Date.now();
+let date_ob = new Date(ts);
+let date = date_ob.getDate();
+let month = date_ob.getMonth() + 1;
+let year = date_ob.getFullYear();
+
+let date_time = year + "-" + month + "-" + date;
+let body = title();
+
+ 
+fs.writeFile(`${date_time}.txt`, body, (err) => {
+  console.log("Completed");
 });
 
-app.listen(3000);
+
+app.get("/getFile", function (request, response) {
+  response.send(`Current Date and Time ${body}`);
+});
+
+app.listen(PORT, () => console.log(`The server started in: ${PORT} ✨✨`));
