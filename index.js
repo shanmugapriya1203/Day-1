@@ -3,7 +3,7 @@ const express = require("express");
 const app = express();
 const PORT = 4000;
 
-
+//server link ---> http://localhost:4000/
 
 let title = () => {
   var timestamp = new Date().toISOString();
@@ -20,13 +20,16 @@ let year = date_ob.getFullYear();
 let date_time = year + "-" + month + "-" + date;
 let body = title();
 
- 
+//! To write or create new file 
 fs.writeFile(`${date_time}.txt`, body, (err) => {
   console.log("Completed");
 });
 
+// node index.js --> to start the server
 
-app.get("/getFile", function (request, response) {
+
+//! print the output in server
+app.get("/", function (request, response) {
   response.send(`Current Date and Time ${body}`);
 });
 
